@@ -1,5 +1,5 @@
 var allAvailableServers = 17 - 1,
-    versionScript = "4.1.0",
+    versionScript = "4.1.1",
     customAfkMsg = [
         "转圈圈",
         "转圈圈喽~",
@@ -402,6 +402,7 @@ const Tracker = new class {
         }
         if (thisTextColor == "#ffffff" || thisTextColor == "#000000") return
         var color = parseInt(thisTextColor.slice(1), 16);
+        var isTTS = false
         var currentTime = Math.floor(Date.now() / 1000);
         if (Date.now() - lastOnlineScreenTime > 60 * 1000) return
         if (type == "Spawn") {
@@ -450,9 +451,11 @@ const Tracker = new class {
                     thisContentMsg = `${thisServerName}: ${thisMobRarity} ${ultraMobSpawns[thisMobName].longName}`
                     thisTitleMsg = thisContentMsg
                 }
+                if (Object.keys(ultraMobSpawns).includes("Ladybug")) isTTS = true
                 Tracker.XHR().Super.send(JSON.stringify({
                     content: `${thisContentMsg} ${ultraMobSpawns[thisMobName].role()}`,
                     embeds: [{
+                        tts: isTTS,
                         title: thisTitleMsg,
                         description: content + thisDescription + `\n**Send time**: <t:${currentTime}:R>`,
                         color: color,
